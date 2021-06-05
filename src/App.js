@@ -8,6 +8,8 @@ import {useEffect} from 'react'
 import {auth,createUserProfileDocument} from './firebase/firebase.utils'
 import {connect} from 'react-redux'
 import {setCurrentUser} from './redux/user/user.actions'
+import CheckoutPage from './pages/checkout/checkoutpage.component';
+
 
 
 
@@ -46,6 +48,7 @@ function App(props) {
 
         }
       </Route>
+      <Route exact to="/checkout" component={CheckoutPage}/>
       </Switch>
     </div>
   );

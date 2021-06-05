@@ -14,3 +14,15 @@ return [...cartItems,{...newItem,quantity:1}]
 
 }
 
+export const decreaseItemQuantity = (cartItems,itemToUpdate) =>{
+    var existingCartItem = cartItems.find(item=>item.id===itemToUpdate.id)
+
+    if (existingCartItem.quantity===1){
+        return cartItems.filter(item=>item.id!==existingCartItem.id)
+    }
+
+    return cartItems.map(item=>
+        (item.id===itemToUpdate.id?
+        {...item,quantity:item.quantity-1}
+        :item))
+}

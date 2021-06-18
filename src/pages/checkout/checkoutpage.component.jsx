@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
+import StripeCheckoutButton from "../../components/stripe-button/stripe-button.component";
 import { selectCartItemsTotal } from "../../redux/cart/cart.selectors";
 import "./checkoutpage.styles.scss";
 
@@ -23,6 +24,7 @@ function CheckoutPage() {
       <div className="total">
         Total : <span style={{ color: "blue" }}>$ {total}</span>
       </div>
+      <StripeCheckoutButton price={total} />
     </div>
   ) : (
     <h3 className="empty-message">Your Cart is Empty</h3>

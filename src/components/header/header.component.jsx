@@ -14,7 +14,9 @@ import {
   DivOption,
 } from "./header.styled";
 
-const Header = ({ user, cart }) => {
+import { signOutStart } from "../../redux/user/user.actions";
+
+const Header = ({ user, cart, signOutStart }) => {
   return (
     <HeaderContainer>
       <LogoContainer to="/">
@@ -25,7 +27,7 @@ const Header = ({ user, cart }) => {
         <LinkOption to="/contact">CONTACT</LinkOption>
 
         {user ? (
-          <DivOption onClick={() => auth.signOut()}>LOGOUT</DivOption>
+          <DivOption onClick={() => signOutStart()}>LOGOUT</DivOption>
         ) : (
           <LinkOption to="/signin">SIGN IN</LinkOption>
         )}
@@ -40,4 +42,8 @@ const mapStateToProps = ({ user, cart }) => ({
   cart: cart.hidden,
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  signOutStart: () => dispatch(signOutStart()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

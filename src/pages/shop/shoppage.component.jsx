@@ -1,38 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import CollectionOverview from "../../components/collection-overview/collectionoverview.component";
-import { firestore } from "../../firebase/firebase.utils";
+import WithspinnerComponent from "../../components/with-spinner/withSpinner.component";
 import CollectionPage from "../../pages/collection-page/collection-page.component";
+import { fetchCollectionsStart } from "../../redux/shopdata/shop.actions";
+import { selectIsCollectionsLoaded } from "../../redux/shopdata/shopdata.selectors";
+
+const CollectionOverviewWithSpinner = WithspinnerComponent(CollectionOverview);
+const CollectionPageWithSpinner = WithspinnerComponent(CollectionPage);
 
 const ShopPage = ({ match }) => {
-  // console.log("match", match);
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => selectIsCollectionsLoaded(state));
+  // const [isLoading, setIsLoading] = useState(true);
+
+  console.log("match", isLoading);
 
   useEffect(() => {
-    const collectionRef = firestore.collection("collections");
-    // console.log(collectionRef);
-
-    // collectionRef.onSnapshot(
-    //   async (snapshot) => {
-    //     console.log(snapshot);
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
-
-    collectionRef.get().then((snapshot) => {
-      console.log(snapshot);
-    });
+    dispatch(fetchCollectionsStart());
   }, []);
 
   return (
     <div>
       <Switch>
-        <Route exact path={`${match.path}/`} component={CollectionOverview} />
+        <Route
+          exact
+          path={`${match.path}/`}
+          render={(props) => (
+            <CollectionOverviewWithSpinner isLoading={!isLoading} {...props} />
+          )}
+        />
         <Route
           exact
           path={`${match.path}/:collectionId`}
-          component={CollectionPage}
+          render={(props) => (
+            <CollectionPageWithSpinner isLoading={!isLoading} {...props} />
+          )}
         />
       </Switch>
     </div>

@@ -3,8 +3,9 @@ import { useSelector } from "react-redux";
 import { selectCollectionPage } from "../../redux/shopdata/shopdata.selectors";
 import "./collection-page.styles.scss";
 import CollectionItem from "../../components/collection-item/collection-item.component";
+import { withRouter } from "react-router";
 
-export default function CollectionPage({ match }) {
+const CollectionPage = ({ match }) => {
   const { title, items } = useSelector((state) =>
     selectCollectionPage(match.params.collectionId)(state)
   );
@@ -19,4 +20,5 @@ export default function CollectionPage({ match }) {
       </div>
     </div>
   );
-}
+};
+export default withRouter(CollectionPage);

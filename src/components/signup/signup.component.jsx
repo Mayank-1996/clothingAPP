@@ -3,16 +3,19 @@ import CustomButton from "../custom-button/custombutton.component";
 import FormInput from "../form-input/forminput.component";
 import "./signup.styles.scss";
 import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
+import { signUpStart } from "../../redux/user/user.actions";
+import { useDispatch } from "react-redux";
 
 export default function SignUp() {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const dispatch = useDispatch();
 
   function handleChange(e) {
     const { value, name } = e.target;
-    console.log([name][0]);
+    // console.log([name][0]);
     switch ([name][0]) {
       case "email":
         setEmail(value);
@@ -36,20 +39,19 @@ export default function SignUp() {
       return;
     }
 
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
+    // try {
+    //   const { user } = await auth.createUserWithEmailAndPassword(
+    //     email,
+    //     password
+    //   );
 
-      await createUserProfileDocument(user, { displayName });
-      setConfirmPassword("");
-      setDisplayName("");
-      setEmail("");
-      setPassword("");
-    } catch (err) {
-      console.log(err);
-    }
+    //   await createUserProfileDocument(user, { displayName });
+    console.log(email, password);
+    dispatch(signUpStart({ email, password, displayName }));
+    setConfirmPassword("");
+    setDisplayName("");
+    setEmail("");
+    setPassword("");
   }
 
   return (

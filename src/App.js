@@ -11,22 +11,26 @@ import { setCurrentUser } from "./redux/user/user.actions";
 import CheckoutPage from "./pages/checkout/checkoutpage.component";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
+import { checkUserSession } from "./redux/user/user.actions";
 
 function App(props) {
-  const { setCurrentUser } = props;
+  // const { setCurrentUser } = props;
+  const unsubscribeFromAuth = null;
 
   useEffect(() => {
-    const logOutUser = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const userRef = await createUserProfileDocument(user);
-        userRef.onSnapshot((snapshot) => {
-          setCurrentUser({ id: snapshot.id, ...snapshot.data() });
-        });
-      } else {
-        setCurrentUser(user);
-      }
-    });
-    return () => logOutUser();
+    // const logOutUser = auth.onAuthStateChanged(async (user) => {
+    //   if (user) {
+    //     const userRef = await createUserProfileDocument(user);
+    //     userRef.onSnapshot((snapshot) => {
+    //       setCurrentUser({ id: snapshot.id, ...snapshot.data() });
+    //     });
+    //   } else {
+    //     setCurrentUser(user);
+    //   }
+    // });
+    const { checkUserSession } = props;
+    checkUserSession();
+    return () => unsubscribeFromAuth();
   }, []);
 
   return (
@@ -49,7 +53,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+  checkUserSession: () => dispatch(checkUserSession()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
